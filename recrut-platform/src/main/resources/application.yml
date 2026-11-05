@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: recrut-platform
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/recrut}
+    # Приложение подключается ролью app_rt (не владельцем таблиц), иначе RLS не действует.
+    username: ${DB_APP_USER:app_rt}
+    password: ${DB_APP_PASSWORD:}
+  flyway:
+    # Миграции выполняются отдельной ролью-владельцем схемы.
+    user: ${DB_OWNER_USER:recrut_owner}
+    password: ${DB_OWNER_PASSWORD:}
+    locations: classpath:db/migration
+  threads:
+    virtual:
+      enabled: true
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
